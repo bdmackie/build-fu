@@ -1,0 +1,41 @@
+{
+  "name": "gulp-es6-fu",
+  "version": "0.1.0",
+  "description": "Gulp ES6 helpers",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "keywords": [
+    "gulp",
+    "es6",
+    "harmony",
+    "babel",
+    "traceur"
+  ],
+  "author": "Ben Mackie <bdmackie@gmail.com>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "babel": "^5.0.7",
+    "bluebird": "^2.9.24",
+    "del": "^1.1.1",
+    "gulp": "^3.8.11",
+    "gulp-babel": "^5.0.0",
+    "gulp-remove-lines": "^0.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.5.1",
+    "gulp-traceur": "^0.17.0",
+    "ncp": "^2.0.0",
+    "promise-fu": "^0.1.0",
+    "traceur": "0.0.87",
+    "underscore": "^1.8.3",
+    "underscore.string": "^3.0.3",
+    "walk": "^2.3.9"
+  },
+  "devDependencies": {
+    "chai": "^2.2.0",
+    "chai-fs": "git://github.com/carrot/chai-fs.git#version-bump",
+    "gulp-mocha": "^2.0.1",
+    "mocha": "^2.2.1"
+  }
+}
