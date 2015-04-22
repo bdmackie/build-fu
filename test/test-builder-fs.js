@@ -18,7 +18,7 @@ function readFileText(path) {
 	return fs.readFileSync(path, {encoding: 'utf8'});
 }
 
-describe('builder-transpiler', function() {
+describe('builder-fs', function() {
     it('should clean target.', function() {
     	var dir = './test/outclean';
     	del.sync(dir);
