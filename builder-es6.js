@@ -8,7 +8,6 @@ var sourcemaps = require('gulp-sourcemaps');
 var babel = require('gulp-babel');
 var traceur = require('gulp-traceur');
 var rename = require('gulp-rename');
-var removeLines = require('gulp-remove-lines');
 var _ = require('underscore');
 var plumber = require('gulp-plumber');
 
@@ -16,10 +15,6 @@ module.exports = function(builder, util) {
 	var _this = builder;
 	var _util = util;
 
-    // This pattern and the use of gulp-remove-lines is a workaround
-    // for the spurrious sourceMappingURL comment pointing to a file
-    // with the original es6 extension.
-    var removeLinePattern = /sourceMappingURL=[^.]*.es6.map/;
     var defaultCleanInlineOptions = {
         recursive : true
     }
