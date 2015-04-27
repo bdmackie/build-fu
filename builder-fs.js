@@ -26,12 +26,39 @@ module.exports = function(builder, util) {
     }
 
 	_this.cleanTarget = function(dir) {
-        return _util.addResolver(function(resolve, reject) {
-            del(dir, function() { 
-                console.log('finished cleaning');
-                resolve(); 
+        if (!_.isArray(dir)) {
+            return _util.addResolver(function(resolve, reject) {
+                del(dir, function() { 
+                    console.log('finished cleaning');
+                    resolve(); 
+                });
             });
+        } else {
+            var resolvers = _.map(dir, function(dir) {
+                return function(resolve, reject) {
+                    del(dir, function() { 
+                        console.log('finished cleaning');
+                        resolve(); 
+                    });
+                }
+            });
+            return _util.addResolvers(resolvers);
+/*
+
+            return _util.addResolvers(
+
+
+                function(resolve, reject) {
+                dirs.forEach(function(dir) {
+                    del.sync(dir);
+                }
+                resolve();
+            }
+        }
         });
+*/
+        }
+
     }
 
     _this.cleanInline = function(dir, options) {
@@ -71,7 +98,7 @@ module.exports = function(builder, util) {
 
         // TODO: Gulp approach is nicer and doesn't have dependencies
         // but won't support non-clobber option until v4. When that is
-        // out use this approach instead and don't clobber by default.
+        // out use this approach instead and preserve "don't clobber by default".
         /*
         // Calc full source path.
         var sourcePath = sourceDir;

@@ -28,7 +28,7 @@ module.exports = function(chai) {
 		new chai.Assertion(obj, 'value').to.be.a.path();
 
 		var pass = fs.statSync(obj).isDirectory();
-		if (files)
+		if (pass && files)
 			new chai.Assertion(fs.readdirSync(obj), 'files').to.have.members(files);
 
 		this.assert(

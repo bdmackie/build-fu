@@ -20,20 +20,35 @@ function Builder() {
         });
     }
 
+    //_util.emit = function(eventName, data) {
+    //    _emitter.emit(eventName, data);
+    //    return _this;
+    //}
+
     _util.addResolver = function(resolver) {
         _promises.addResolver(resolver);
         return _this;
     }
 
+    _util.addResolvers = function(resolvers) {
+        _promises.addResolvers(resolvers);
+        return _this;
+    }
+
     _util.addStream = function(streamFn) {
         return _util.addResolver(function(resolve, reject) {
-            var stream = streamFn();
+            var stream = streamFn(resolve, reject);
             stream.on('end', function() { 
                 console.log('finish stream');
                 resolve(); 
             });
         });
     }
+
+    //_this.on = function(eventName, listener) {
+    //    _emitter.on(eventName, listener);
+    //    return _this;
+    //}
 
     _this.fork = function() {
         _promises.fork();
@@ -47,8 +62,6 @@ function Builder() {
 
     _this.then = function() {
         return _promises.then.apply(_promises, arguments);
-        //var p = _promises.all();
-        //return p.then.apply(p, arguments);
     }
 
     // Add build methods.

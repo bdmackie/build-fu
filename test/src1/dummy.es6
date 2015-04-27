@@ -6,7 +6,7 @@ class DummyService {
 	iter() {
 		let arr = [1, 2, 3, 4, 5];
 		let n = 0;
-		for (e of arr)
+		for (let e of arr)
 			n += e;
 		return n;
 	}

@@ -1,7 +1,16 @@
 var gulp = require('gulp');
-var es6 = require('./index').Es6Transpiler;
+var builder = require('./index').Builder;
 var mocha = require('gulp-mocha');
 var Promise = require('bluebird');
+
+var sourcemaps = require('gulp-sourcemaps');
+var babel = require('gulp-babel');
+var traceur = require('gulp-traceur');
+var rename = require('gulp-rename');
+var removeLines = require('gulp-remove-lines');
+var _ = require('underscore');
+var plumber = require('gulp-plumber');
+var removeLinePattern = /sourceMappingURL=[^.]*.es6.map/;
 
 gulp.task('default', function() {
   // place code for your default task here
@@ -11,29 +20,37 @@ gulp.task('default', function() {
 
 // Clean them generated files.
 gulp.task('clean', function () {
-    return es6.cleanTarget('./test/out1')
-            .cleanTarget('./test/out2')
-            .then(function() { 
-                console.log('finished cleaning'); 
-            });
+    return builder.cleanTarget(['./test/out', './test/out1', './test/out2', './test/out-compile'])
+        .then(function() { 
+            console.log('finished cleaning'); 
+        });
 });
 
 // Compile (transpile) ES6 to JS.
 gulp.task('compile', ['clean'], function () {
-    console.log('flag');
-    return es6
-        .compile({
-            sourceDir : 'test/src1',
-            targetDir : 'test/out1'
-        })
-        .compile({
-            sourceDir: 'test/src2',
-            targetDir: 'test/out2'
-        })
-        .copy({
-            sourceDir: 'test/src2',
-            targetDir: 'test/out2'
-        }); 
+    return builder
+        .setEs6Compiler('traceur')
+        .es6Compile('./test/src2', './test/out');
+});
+
+gulp.task('compile-traceur', ['clean'], function () {
+    return gulp.src('./test/src2/**/*.es6')
+        .pipe(plumber())
+        .pipe(sourcemaps.init())
+        .pipe(traceur({sourceMaps:true}))
+        .pipe(rename({extname: ".js"}))
+        .pipe(sourcemaps.write('.', {addComment: true}))
+        .pipe(gulp.dest('./test/out'));
+});
+
+gulp.task('compile-babel', ['clean'], function () {
+    return gulp.src('./test/src2/**/*.es6')
+        .pipe(plumber())
+        .pipe(sourcemaps.init())
+        .pipe(babel())
+        .pipe(rename({extname: ".js"}))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('./test/out'));
 });
 
 // Test
