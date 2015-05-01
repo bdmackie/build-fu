@@ -9,7 +9,7 @@ describe('builder-es6-smoke', function() {
     it('should compile simple smoke test', function() {
     	var dir = th.resetTarget('./test/out-compile');
     	return builder
-	    	.es6Compile('./test/src1', dir)
+	    	.transpile('./test/src1', dir)
 	    	.then(function() {
 		    	expect(dir).to.be.a.directory(['dummy.js', 'dummy.js.map']);
 		    	var service = require('./out-compile/dummy').service;
@@ -24,13 +24,12 @@ describe('builder-es6-smoke', function() {
 	});
 });
 
-['traceur', 'babel'].forEach(function(compiler) {
+['traceur', 'babel'].forEach(function(transpiler) {
 	describe('builder-es6', function() {
 	    it('should compile simple', function() {
 	    	var dir = th.resetTarget('./test/out-compile');
 	    	return builder
-	    		.setEs6Compiler(compiler)
-		    	.es6Compile('./test/src1', dir)
+		    	.transpile('./test/src1', dir, { "transpiler" : transpiler })
 		    	.then(function() {
 			    	expect(dir).to.be.a.directory(['dummy.js', 'dummy.js.map']);
 			    	var service = require('./out-compile/dummy').service;
@@ -47,8 +46,8 @@ describe('builder-es6-smoke', function() {
 	    it('should compile scoping', function() {
 	    	var dir = th.resetTarget('./test/out-compile');
 	    	return builder
-	    		.setEs6Compiler(compiler)
-		    	.es6Compile('./test/src2', dir)
+	    		.transpileOptions({ "transpiler" : transpiler })
+		    	.transpile('./test/src2', dir)
 		    	.then(function(res, err) {
 		    		if (err) {
 		    			console.log('error! ' + err);
@@ -66,8 +65,8 @@ describe('builder-es6-smoke', function() {
 		it('should compile generators', function() {
 	    	var dir = th.resetTarget('./test/out-compile');
 	    	return builder
-	    		.setEs6Compiler(compiler)
-		    	.es6Compile('./test/src2', dir)
+	    		.transpileOptions({ "transpiler" : transpiler })
+		    	.transpile('./test/src2', dir)
 		    	.then(function(res, err) {
 		    		if (err) {
 		    			console.log('error! ' + err);
@@ -86,7 +85,7 @@ describe('builder-es6-smoke', function() {
 		it('should compile proxies', function() {
 	    	var dir = th.resetTarget('./test/out-compile');
 	    	return builder
-		    	.es6Compile('./test/src2', dir)
+		    	.transpile('./test/src2', dir)
 		    	.then(function(res, err) {
 		    		if (err) {
 		    			console.log('error! ' + err);
@@ -103,8 +102,8 @@ describe('builder-es6-smoke', function() {
 		it('should compile collections', function() {
 	    	var dir = th.resetTarget('./test/out-compile');
 	    	return builder
-	    		.setEs6Compiler(compiler)
-		    	.es6Compile('./test/src2', dir)
+	    		.transpileOptions({ "transpiler" : transpiler })
+		    	.transpile('./test/src2', dir)
 		    	.then(function(res, err) {
 		    		if (err) {
 		    			console.log('error! ' + err);
@@ -120,8 +119,8 @@ describe('builder-es6-smoke', function() {
 		it('should compile classes', function() {
 	    	var dir = th.resetTarget('./test/out-compile');
 	    	return builder
-	    		.setEs6Compiler(compiler)
-		    	.es6Compile('./test/src2', dir)
+	    		.transpileOptions({ "transpiler" : transpiler })
+		    	.transpile('./test/src2', dir)
 		    	.then(function(res, err) {
 		    		if (err) {
 		    			console.log('error! ' + err);
@@ -144,8 +143,8 @@ describe('builder-es6-smoke', function() {
 		it('should compile arrows', function() {
 	    	var dir = th.resetTarget('./test/out-compile');
 	    	return builder
-	    		.setEs6Compiler(compiler)
-		    	.es6Compile('./test/src2', dir)
+	    		.transpileOptions({ "transpiler" : transpiler })
+		    	.transpile('./test/src2', dir)
 		    	.then(function(res, err) {
 		    		if (err) {
 		    			console.log('error! ' + err);

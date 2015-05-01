@@ -20,7 +20,7 @@ gulp.task('default', function() {
 
 // Clean them generated files.
 gulp.task('clean', function () {
-    return builder.cleanTarget(['./test/out', './test/out1', './test/out2', './test/out-compile'])
+    return builder.del(['./test/out', './test/out1', './test/out2', './test/out-compile'])
         .then(function() { 
             console.log('finished cleaning'); 
         });
@@ -29,8 +29,8 @@ gulp.task('clean', function () {
 // Compile (transpile) ES6 to JS.
 gulp.task('compile', ['clean'], function () {
     return builder
-        .setEs6Compiler('traceur')
-        .es6Compile('./test/src2', './test/out');
+        .setDefaultTranspiler('traceur')
+        .transpile('./test/src2', './test/out');
 });
 
 gulp.task('compile-traceur', ['clean'], function () {

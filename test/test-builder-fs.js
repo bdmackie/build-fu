@@ -5,7 +5,7 @@ var builder = require('../index').Builder;
 var th = require('./testing-helper');
 
 describe('builder-fs', function() {
-    it('should clean target.', function() {
+    it('should delete target.', function() {
     	var dir = th.resetTarget('./test/out');
     	th.writeTextFile(dir + '/file1.js', 'var global = "hello world 1";');
     	th.writeTextFile(dir + '/file2.js', 'var global = "hello world 2";');
@@ -14,7 +14,7 @@ describe('builder-fs', function() {
     	expect(dir).to.be.a.directory(['file1.js', 'file2.js']);
 
 	    return builder
-	    	.cleanTarget(dir)
+	    	.del(dir)
 	    	.then(function() {
 		    	expect(dir).to.not.be.a.path();
 	    	});
@@ -31,7 +31,7 @@ describe('builder-fs', function() {
     	expect(dir).to.be.a.directory(['file1.es6', 'file1.js', 'file1.js.map', 'file2.js']);
 
 	    return builder
-	    	.cleanInline(dir)
+	    	.clean(dir)
 	    	.then(function() {
 		    	expect(dir).to.be.a.directory(['file1.es6', 'file2.js']);
 		    	th.delTarget(dir);

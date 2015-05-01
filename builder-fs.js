@@ -16,7 +16,7 @@ module.exports = function(builder, util) {
 	var _this = builder;
 	var _util = util;
 
-    var defaultCleanInlineOptions = {
+    var defaultCleanOptions = {
         recursive : true
     }
     var defaultCopyOptions = {
@@ -25,7 +25,7 @@ module.exports = function(builder, util) {
         overwrite : false
     }
 
-	_this.cleanTarget = function(dir) {
+	_this.del = function(dir) {
         if (!_.isArray(dir)) {
             return _util.addResolver(function(resolve, reject) {
                 del(dir, function() { 
@@ -43,26 +43,11 @@ module.exports = function(builder, util) {
                 }
             });
             return _util.addResolvers(resolvers);
-/*
-
-            return _util.addResolvers(
-
-
-                function(resolve, reject) {
-                dirs.forEach(function(dir) {
-                    del.sync(dir);
-                }
-                resolve();
-            }
         }
-        });
-*/
-        }
-
     }
 
-    _this.cleanInline = function(dir, options) {
-        options = _.extend(defaultCleanInlineOptions, options);
+    _this.clean = function(dir, options) {
+        options = _.extend(defaultCleanOptions, options);
         var path = dir + (options.recursive ? '/**' : '') + '/*.es6';
 
         return _util.addResolver(function(resolve, reject) {
@@ -114,7 +99,7 @@ module.exports = function(builder, util) {
 
         // All that's left is to do the copy...
         //console.log('copying from %s', sourcePath);
-        return addStream(function() {
+        return _util.addStream(function() {
             return gulp.src(sourcePath)
                 .pipe(gulp.dest(targetDir));
         });

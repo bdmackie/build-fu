@@ -15,23 +15,20 @@ module.exports = function(builder, util) {
 	var _this = builder;
 	var _util = util;
 
-    var defaultCleanInlineOptions = {
-        recursive : true
-    }
-    var defaultCompileOptions = {
-        compiler: 'traceur',
+    var defaultTranspileOptions = {
+        transpiler: 'traceur',
         recursive : true,
         sourceExtension: 'es6'
     }
 
-    _this.setEs6Compiler = function(compiler) {
-        defaultCompileOptions.compiler = compiler;
+    _this.transpileOptions = function(options) {
+        defaultTranspileOptions = _.extend(defaultTranspileOptions, options);
         return _this;
     }
     
-    _this.es6Compile = function(sourceDir, targetDir, options) {
+    _this.transpile = function(sourceDir, targetDir, options) {
         // Validate options.
-        var opt = _.extend(defaultCompileOptions, options);
+        var opt = _.extend(defaultTranspileOptions, options);
         if (!sourceDir)
             throw new Error('Invalid source directory.');
         if (!targetDir)
@@ -44,7 +41,7 @@ module.exports = function(builder, util) {
         sourcePath += '/*.es6';
 
         // Do transpilation
-        switch (opt.compiler) {
+        switch (opt.transpiler) {
             case 'babel':
                 return _util.addStream(function(resolve, reject) {
                     console.log('start babel compile ' + sourcePath);
@@ -68,7 +65,7 @@ module.exports = function(builder, util) {
                         .pipe(gulp.dest(targetDir));
                     });
             default:
-                throw new Error('Unknown transpiler: ' + opt.compiler);
+                throw new Error('Unknown transpiler: ' + opt.transpiler);
         }
     }
 }

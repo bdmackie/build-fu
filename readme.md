@@ -11,7 +11,7 @@ A small library providing helpers for building projects from code based tools li
 
 ```javascript
     var bf = new BuildFu();
-    return bf.cleanTarget('./out')
+    return bf.del('./out')
         .fork()
         .compile('./src', './out')
         .compile('./test/src', './test/out')
