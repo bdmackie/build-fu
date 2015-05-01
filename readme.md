@@ -1,5 +1,5 @@
-Promise Fu
-==========
+Build Fu
+========
 
 A small library providing helpers for building projects from code based tools like gulp.
 

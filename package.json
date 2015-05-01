@@ -1,7 +1,7 @@
 {
-  "name": "gulp-es6-fu",
-  "version": "0.1.0",
-  "description": "Gulp ES6 helpers",
+  "name": "build-fu",
+  "version": "0.1.1",
+  "description": "Build helpers (gulp based)",
   "main": "index.js",
   "scripts": {
     "test": "gulp test"
