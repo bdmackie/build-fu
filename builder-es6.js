@@ -1,7 +1,7 @@
 /**
  * @file ES6 build helpers.
  * @copyright Ben Mackie 2015
- * @license Apache-2.0
+ * @license MIT
  */
 var gulp = require('gulp');
 var sourcemaps = require('gulp-sourcemaps');
@@ -10,6 +10,7 @@ var traceur = require('gulp-traceur');
 var rename = require('gulp-rename');
 var _ = require('underscore');
 var plumber = require('gulp-plumber');
+var debug = require('./depfile').debug('es6');
 
 module.exports = function(builder, util) {
 	var _this = builder;
@@ -38,13 +39,13 @@ module.exports = function(builder, util) {
         var sourcePath = sourceDir;
         if (opt.recursive)
             sourcePath += '/**';
-        sourcePath += '/*.es6';
+        sourcePath += '/*.' + opt.sourceExtension;
 
         // Do transpilation
         switch (opt.transpiler) {
             case 'babel':
                 return _util.addStream(function(resolve, reject) {
-                    console.log('start babel compile ' + sourcePath);
+                    debug('start babel compile ' + sourcePath);
                     return gulp.src(sourcePath)
                         .pipe(plumber(reject))
                         .pipe(sourcemaps.init())
@@ -55,7 +56,7 @@ module.exports = function(builder, util) {
                     });
             case 'traceur':
                 return _util.addStream(function(resolve, reject) {
-                    console.log('start traceur compile ' + sourcePath);
+                    debug('start traceur compile ' + sourcePath);
                     return gulp.src(sourcePath)
                         .pipe(plumber(reject))
                         .pipe(sourcemaps.init())

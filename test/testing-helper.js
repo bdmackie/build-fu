@@ -5,8 +5,8 @@ var del = require('del');
 var mf = require('module-fu');
 mf.setResolver(function(moduleName) { return require.resolve(moduleName); });
 
-module.exports.uncache = function(path) {
-	mf.uncache(path);
+module.exports.removeModule = function(path) {
+	mf.remove(path);
 }
 
 module.exports.resetTarget = function(dir) {

@@ -15,7 +15,7 @@ describe('builder-es6-smoke', function() {
 		    	var service = require('./out-compile/dummy').service;
 		    	expect(service.foo()).to.equal('bar');
 		    	expect(service.iter()).to.equal(15);
-		    	th.uncache('./out-compile/dummy.js');
+		    	th.removeModule('./out-compile/dummy.js');
 
 		    	var sourceMap = th.readJsonFile('./test/out-compile/dummy.js.map');
 		    	expect(sourceMap.sources).to.have.members(['dummy.es6']);
@@ -35,7 +35,7 @@ describe('builder-es6-smoke', function() {
 			    	var service = require('./out-compile/dummy').service;
 			    	expect(service.foo()).to.equal('bar');
 			    	expect(service.iter()).to.equal(15);
-			    	th.uncache('./out-compile/dummy.js');
+			    	th.removeModule('./out-compile/dummy.js');
 
 			    	var sourceMap = th.readJsonFile('./test/out-compile/dummy.js.map');
 			    	expect(sourceMap.sources).to.have.members(['dummy.es6']);

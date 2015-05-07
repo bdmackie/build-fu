@@ -5,6 +5,7 @@
  */
 var Promise = require('bluebird');
 var PromiseChain = require('promise-fu').PromiseChain;
+var debug = require('./depfile').debug('base');
 
 function Builder() {
     var _this = {};
@@ -39,7 +40,7 @@ function Builder() {
         return _util.addResolver(function(resolve, reject) {
             var stream = streamFn(resolve, reject);
             stream.on('end', function() { 
-                console.log('finish stream');
+                debug('finished stream');
                 resolve(); 
             });
         });

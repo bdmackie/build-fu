@@ -1,7 +1,7 @@
 /**
  * @file File system build helpers.
  * @copyright Ben Mackie 2015
- * @license Apache-2.0
+ * @license MIT
  */
 var fs = require('fs');
 var path = require('path');
@@ -11,6 +11,7 @@ var s = require('underscore.string');
 var glob = require("glob");
 var walk = require("walk");
 var fse = require("fs-extra");
+var debug = require('./depfile').debug('fs');
 
 module.exports = function(builder, util) {
 	var _this = builder;
@@ -29,7 +30,7 @@ module.exports = function(builder, util) {
         if (!_.isArray(dir)) {
             return _util.addResolver(function(resolve, reject) {
                 del(dir, function() { 
-                    console.log('finished cleaning');
+                    debug('finished del');
                     resolve(); 
                 });
             });
@@ -37,7 +38,7 @@ module.exports = function(builder, util) {
             var resolvers = _.map(dir, function(dir) {
                 return function(resolve, reject) {
                     del(dir, function() { 
-                        console.log('finished cleaning');
+                        debug('finished del');
                         resolve(); 
                     });
                 }
@@ -57,30 +58,35 @@ module.exports = function(builder, util) {
                     var stem = s.strLeftBack(file, '.');
                     var srcFile = stem + '.js';
                     if (fs.existsSync(srcFile)) {
-                        console.log('  Deleting file %s...', srcFile)
+                        debug('  Deleting file %s...', srcFile)
                         fs.unlinkSync(srcFile);
                     }
                     var mapFile = stem + '.js.map';
                     if (fs.existsSync(mapFile)) {
-                        console.log('  Deleting file %s...', mapFile)
+                        debug('  Deleting file %s...', mapFile)
                         fs.unlinkSync(mapFile);
                     }
                 });
+                debug('finished clean')
                 resolve();
             });
         });
     }
 
     _this.copy = function(sourceDir, targetDir, options) {
-        // Validate options.
+        // Validate args.
         var opt = _.extend(defaultCopyOptions, options);
         if (!sourceDir)
             throw new Error('Invalid source directory.');
         if (!targetDir)
             throw new Error('Invalid target directory.');
-        if (opt.extensions != null && !_.isArray(opt.extensions))
-            throw new Error('Invalid extensions option. Must be an array or null.');
-
+        /*
+        if (typeof extensions === 'string')
+            extensions = [extensions];
+        else if (!_.isArray(extensions))
+            throw new Error('Invalid extensions.');
+        */
+        
         // TODO: Gulp approach is nicer and doesn't have dependencies
         // but won't support non-clobber option until v4. When that is
         // out use this approach instead and preserve "don't clobber by default".
@@ -98,7 +104,7 @@ module.exports = function(builder, util) {
         }
 
         // All that's left is to do the copy...
-        //console.log('copying from %s', sourcePath);
+        //debug('copying from %s', sourcePath);
         return _util.addStream(function() {
             return gulp.src(sourcePath)
                 .pipe(gulp.dest(targetDir));
@@ -116,7 +122,7 @@ module.exports = function(builder, util) {
                 var ext = s.strRightBack(name, '.');
                 if (opt.extensions == null || opt.extensions.indexOf(ext) >= 0) {
                     if (opt.overwrite || !fs.existsSync(targetDir + name)) {
-                        console.log('copying %s (extensions %s)...', name, opt.extensions);
+                        debug('copying %s (extensions %s)...', name, opt.extensions);
                         fse.copySync(sourceDir + name, targetDir + name);
                     }
                 }
@@ -128,7 +134,7 @@ module.exports = function(builder, util) {
             });
              
             walker.on("end", function () {
-                //console.log("all done");
+                debug("finished copy");
                 resolve();
             });
         });

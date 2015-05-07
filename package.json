@@ -1,6 +1,6 @@
 {
   "name": "build-fu",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Build helpers (gulp based)",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "traceur"
   ],
   "author": "Ben Mackie <bdmackie@gmail.com>",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "dependencies": {
     "babel": "^5.0.7",
     "bluebird": "^2.9.24",
