@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var builder = require('./index').Builder;
 var mocha = require('gulp-mocha');
 var Promise = require('bluebird');
+var bump = require('gulp-bump');
 
 var sourcemaps = require('gulp-sourcemaps');
 var babel = require('gulp-babel');
@@ -51,6 +52,16 @@ gulp.task('compile-babel', ['clean'], function () {
         .pipe(rename({extname: ".js"}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./test/out'));
+});
+
+gulp.task('bump', function(){
+    return gulp.src('./package.json')
+        .pipe(bump())
+        .pipe(gulp.dest('./'));
+});
+
+gulp.task('reload-modules', ['clean'], function () {
+    //return builder.del('./node-modules');
 });
 
 // Test
